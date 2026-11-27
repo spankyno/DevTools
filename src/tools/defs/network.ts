@@ -1,15 +1,10 @@
 import type { ToolDef } from '../types';
-
-const STATUS: Record<string, string> = {
-  200: 'OK', 201: 'Created', 204: 'No Content', 301: 'Moved Permanently', 302: 'Found', 304: 'Not Modified',
-  400: 'Bad Request', 401: 'Unauthorized', 403: 'Forbidden', 404: 'Not Found', 409: 'Conflict',
-  422: 'Unprocessable Content', 429: 'Too Many Requests', 500: 'Internal Server Error', 502: 'Bad Gateway',
-  503: 'Service Unavailable', 504: 'Gateway Timeout',
-};
+import { HTTP_STATUS } from '../lib/refdata';
 
 const tools: ToolDef[] = [
   {
     id: 'api',
+    browserOnly: true,
     name: 'API Request Tester',
     desc: 'Envía una petición GET desde el navegador y muestra la respuesta.',
     category: 'Red y HTTP',
@@ -32,11 +27,21 @@ const tools: ToolDef[] = [
   {
     id: 'status',
     name: 'HTTP Status Codes',
-    desc: 'Consulta códigos de estado HTTP frecuentes.',
+    desc: 'Catálogo completo de códigos de estado HTTP con su significado.',
     category: 'Red y HTTP',
     icon: '200',
     sample: '404',
-    run: (input) => STATUS[input.trim()] ?? 'Código no incluido en la tabla rápida.',
+    tip: 'Busca por código (404), por clase (4xx) o por texto (redirect, timeout…). Vacío = todos.',
+    run(input) {
+      const q = input.trim().toLowerCase();
+      const fmt = ([c, n, d]: [number, string, string]) => `${c}  ${n}\n     ${d}`;
+      let list = HTTP_STATUS;
+      if (/^\d{3}$/.test(q)) list = HTTP_STATUS.filter(([c]) => c === Number(q));
+      else if (/^[1-5](xx)?$/.test(q)) list = HTTP_STATUS.filter(([c]) => String(c)[0] === q[0]);
+      else if (q) list = HTTP_STATUS.filter(([c, n, d]) => `${c} ${n} ${d}`.toLowerCase().includes(q));
+      if (!list.length) return /^\d{3}$/.test(q) ? `El código ${q} no está en el catálogo estándar.` : 'Sin resultados.';
+      return list.map(fmt).join('\n\n');
+    },
   },
   {
     id: 'url-parser',

@@ -1,31 +1,6 @@
 import type { ToolDef } from '../types';
 import { parseJson } from '../lib/json';
-
-function parseCsv(text: string, delim: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [], cur = '', q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"' && text[i + 1] === '"') { cur += '"'; i++; }
-      else if (c === '"') q = false;
-      else cur += c;
-    } else if (c === '"') q = true;
-    else if (c === delim) { row.push(cur); cur = ''; }
-    else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++;
-      row.push(cur); cur = ''; rows.push(row); row = [];
-    } else cur += c;
-  }
-  if (q) throw new Error('CSV no válido: comillas sin cerrar.');
-  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
-  return rows.filter((r) => r.some((v) => v !== ''));
-}
-
-const csvCell = (v: unknown, d: string) => {
-  const s = v === null || v === undefined ? '' : typeof v === 'object' ? JSON.stringify(v) : String(v);
-  return /["\n\r]/.test(s) || s.includes(d) ? `"${s.replace(/"/g, '""')}"` : s;
-};
+import { csvCell, parseCsv } from '../lib/csv';
 
 const tools: ToolDef[] = [
   {
@@ -59,6 +34,7 @@ const tools: ToolDef[] = [
   },
   {
     id: 'xml',
+    browserOnly: true,
     name: 'XML / JSON Converter',
     desc: 'Convierte XML a JSON (atributos y etiquetas repetidas).',
     category: 'JSON y XML',

@@ -50,9 +50,22 @@ npm run typecheck   # comprueba los tipos también en las pruebas
 Hay una prueba que ejecuta la muestra de **todas** las herramientas (salvo API y XML, que necesitan navegador), así que una herramienta nueva con una muestra rota hace fallar los tests.
 
 ## Catálogo
-33 utilidades en 11 categorías: JSON Formatter/Validator/Minifier, JSON Viewer, JSON Diff, CSV/JSON, XML/JSON, Base64 (texto y archivos), URL Encoder/Decoder, JWT Decoder/Inspector, Hash Generator (MD5, SHA-1/256/384/512), Hash Checker, HMAC, UUID v4/v7, Password Generator, Regex Tester, Text Diff, Case Converter, Markdown Preview, Timestamp Converter, Cron Helper, HTML/CSS Formatter, HTML Live Preview, CSS Gradient, Color Converter, Color Contrast, SQL Formatter, SQL Playground demostrativo, API Request Tester, HTTP Status Codes, URL Parser, CIDR Calculator, .gitignore Generator y Fake Data Generator.
+100 utilidades en 12 categorías (todas funcionan en el navegador salvo el probador de API):
+
+- **JSON y XML (5):** JSON Formatter/Validator, JSON Viewer, JSON Diff, CSV↔JSON, XML→JSON.
+- **Codificación (5):** Base64, URL, HTML Entities, Unicode, Punycode.
+- **Seguridad (5):** JWT, Hash (MD5/SHA), Hash Checker, HMAC, Password Strength.
+- **Generadores (5):** UUID v4/v7, Password, Fake Data, Lorem Ipsum, Random Number.
+- **Texto (13):** Counter, Sorter, Duplicate Remover, Line Breaks, Whitespace, Reverser, Slug, String Escape, Extractor, Regex, Text Diff, Case Converter, Markdown Preview.
+- **Fecha y hora (9):** Timestamp, Cron, Date Calculator, Date Difference, Timezone, ISO 8601, Unix Time Now, Working Days, Leap Year.
+- **Conversión y cálculo (10):** Number Base, Text↔Hex/Binary, Byte, Percentage, Unit, CSS Units, Aspect Ratio, DPI/PPI, Data Transfer, Color Temperature.
+- **HTML, CSS y JS (11):** HTML/CSS Formatter, HTML Preview, CSS Minifier, Specificity, Selector Tester, SVG Placeholder, SVG→Data URI, Image Base64, Data URI, Meta Tags.
+- **Red y HTTP (12):** API Tester, HTTP Status, URL Parser, CIDR, Query String, IPv4/IPv6, IP Info, User-Agent, HTTP Headers, MIME, Puertos, DNS.
+- **Diseño (9):** Gradient, Color Converter, Palette, Contrast, Box Shadow, Border Radius, Flexbox, Grid, CSS Filter.
+- **Bases de datos (7):** SQL Formatter, SQL Minifier, INSERT Generator, CREATE TABLE Generator, Test Data Generator, Connection String, SQL Playground (demo).
+- **Git y desarrollo (9):** .gitignore, Cheat Sheet, Command Builder, Commit Builder, SemVer, Licencias, README, Changelog, package.json Inspector.
 
 ## Limitaciones y privacidad
-La mayoría de operaciones se ejecutan localmente. El probador API contacta con un servidor remoto y puede verse limitado por CORS. JWT Decoder no verifica firmas. SQL Playground es demostrativo, no ejecuta SQL real. CSV/XML son conversores básicos. Google Fonts se solicita externamente; elimina el `@import` CSS para evitarlo.
+La mayoría de operaciones se ejecutan localmente. El probador API contacta con un servidor remoto y puede verse limitado por CORS. JWT Decoder no verifica firmas. SQL Playground es demostrativo, no ejecuta SQL real. XML→JSON es un conversor básico. IP Address Info clasifica rangos reservados en local: no da geolocalización. Los resultados de Password Strength son orientativos (no usa diccionarios). Google Fonts se solicita externamente; elimina el `@import` CSS para evitarlo.
 
 Licencia MIT.

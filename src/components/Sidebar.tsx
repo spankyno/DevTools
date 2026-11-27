@@ -31,7 +31,7 @@ export default function Sidebar({ open, onClose, category, onCategory, categorie
           <div className="privacy-icon">✦</div><b>Privacidad primero</b>
           <p>La mayoría de herramientas funcionan localmente en tu navegador. Tus datos permanecen en tu dispositivo.</p>
         </div>
-        <div className="version">DEVTOOLS TOOLBOX <span>v1.1.0</span></div>
+        <div className="version">DEVTOOLS TOOLBOX <span>v1.2.0</span></div>
       </div>
     </aside>
   );

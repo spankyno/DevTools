@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Copy, Download, Play, RotateCcw, Sparkles, Star, Upload } from 'lucide-react';
 import type { OptionValue, Opts, ToolDef } from '../tools/types';
 import OptionsBar from './OptionsBar';
@@ -32,6 +32,18 @@ const ToolWorkspace = forwardRef<HTMLElement, Props>(function ToolWorkspace({ to
       if (id === runId.current) setBusy(false);
     }
   }
+
+  // Herramientas «en vivo» (p. ej. Unix Time Now): se actualizan solas mientras están abiertas.
+  useEffect(() => {
+    if (!tool.live) return;
+    let alive = true;
+    const tick = async () => {
+      try { const out = await tool.run(input, extra, opts); if (alive) { setOutput(out); setError(false); } } catch { /* se ignora en bucle */ }
+    };
+    tick();
+    const id = setInterval(tick, tool.live);
+    return () => { alive = false; clearInterval(id); };
+  }, [tool, input, extra, opts]);
 
   const run = () => exec(() => tool.run(input, extra, opts));
   const onFile = (f?: File) => { if (f && tool.runFile) exec(() => tool.runFile!(f, opts)); if (fileRef.current) fileRef.current.value = ''; };
@@ -70,6 +82,7 @@ const ToolWorkspace = forwardRef<HTMLElement, Props>(function ToolWorkspace({ to
             <button className="subtle" onClick={reset}><RotateCcw size={14} /> Restablecer</button>
           </div>
           {tool.options && <OptionsBar options={tool.options} values={opts} onChange={(id: string, v: OptionValue) => setOpts((p) => ({ ...p, [id]: v }))} />}
+          {!tool.noInput && tool.inputLabel && <div className="second-label">{tool.inputLabel}</div>}
           {!tool.noInput && <textarea spellCheck={false} value={input} onChange={(e) => setInput(e.target.value)} placeholder="Escribe o pega aquí..." aria-label="Entrada" />}
           {tool.secondLabel && (
             <>
@@ -105,6 +118,7 @@ const ToolWorkspace = forwardRef<HTMLElement, Props>(function ToolWorkspace({ to
           {showResult && tool.view === 'html' ? <iframe title="Vista previa" sandbox="" srcDoc={output} />
             : showResult && tool.view === 'tree' ? <JsonTree text={output} />
             : <pre className={output ? (error ? 'result error' : 'result') : 'empty-result'}>{output || 'El resultado aparecerá aquí cuando ejecutes la herramienta.'}</pre>}
+          {showResult && tool.preview && <iframe className="preview-frame" title="Vista previa" sandbox="" srcDoc={tool.preview(output, input, extra, opts)} />}
           <div className="panel-foot">
             <span>{output.length} caracteres</span>
             <span className={'ready' + (error ? ' bad' : '')}><i /> {error ? 'ERROR' : 'LISTO'}</span>

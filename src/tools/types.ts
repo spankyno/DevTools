@@ -20,6 +20,8 @@ export type ToolDef = {
   /** Orden dentro de la categoría (por defecto 50, después por nombre). */
   order?: number;
   sample: string;
+  /** Etiqueta sobre el área de entrada (útil cuando hay dos campos). */
+  inputLabel?: string;
   secondLabel?: string;
   secondSample?: string;
   /** Oculta el área de entrada (herramientas controladas solo por opciones). */
@@ -31,6 +33,12 @@ export type ToolDef = {
   tip?: string;
   /** Aviso fijo bajo la entrada (privacidad, CORS, etc.). */
   hint?: string;
+  /** Vista previa visual (HTML aislado) que se muestra bajo el resultado. */
+  preview?: (output: string, input: string, extra: string, opts: Opts) => string;
+  /** Re-ejecuta la herramienta cada N milisegundos mientras está abierta. */
+  live?: number;
+  /** Necesita APIs del navegador (DOM, red): se excluye de las pruebas en Node. */
+  browserOnly?: boolean;
   fileInput?: { label: string; accept?: string };
   run: (input: string, extra: string, opts: Opts) => string | Promise<string>;
   runFile?: (file: File, opts: Opts) => Promise<string>;
@@ -43,6 +51,7 @@ export const CATEGORY_ORDER = [
   'Generadores',
   'Texto',
   'Fecha y hora',
+  'Conversión y cálculo',
   'HTML, CSS y JS',
   'Red y HTTP',
   'Diseño',

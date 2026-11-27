@@ -25,8 +25,8 @@ describe('registro', () => {
   });
 
   it('la muestra de cada herramienta se ejecuta sin errores', async () => {
-    // api necesita red y xml necesita DOMParser (solo navegador)
-    for (const t of tools.filter((t) => !['api', 'xml'].includes(t.id))) {
+    // las marcadas browserOnly (red, DOMParser…) solo se pueden probar en el navegador
+    for (const t of tools.filter((t) => !t.browserOnly)) {
       const out = await t.run(t.sample, t.secondSample ?? '', defaults(t.id));
       expect(typeof out, t.id).toBe('string');
       expect(out.startsWith('Error:'), `${t.id}: ${out}`).toBe(false);

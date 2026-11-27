@@ -22,3 +22,7 @@
 .jt-arrow{width:12px;color:var(--muted)}.jt-leaf{padding-left:16px}
 .jt-children{margin-left:7px;padding-left:12px;border-left:1px dashed var(--border)}
 .jt-key{color:var(--accent)}.jt-str{color:#e3a76f}.jt-num{color:#6fb8e3}.jt-bool{color:#c78be8}.jt-null{color:var(--muted)}.jt-meta{color:var(--muted)}
+
+.preview-frame{display:block;width:100%;height:170px;border:0;border-top:1px solid var(--border);background:#fff}
+.opt input[type=text]{width:120px}
+.second-label+textarea{padding-top:8px}
