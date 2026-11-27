@@ -1,4 +1,30 @@
+# Dependencias
 node_modules/
+
+# Build y caché de TypeScript/Vite
 dist/
+*.tsbuildinfo
+.vite/
+
+# Variables de entorno y secretos
 .env
+.env.*
+!.env.example
+.dev.vars
+
+# Logs
 *.log
+npm-debug.log*
+
+# Pruebas
+coverage/
+
+# Cloudflare / Wrangler
+.wrangler/
+
+# Editor y sistema operativo
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
